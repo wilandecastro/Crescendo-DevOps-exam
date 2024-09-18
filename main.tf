@@ -90,7 +90,7 @@ resource "aws_route_table_association" "public_assoc_1" {
 resource "aws_security_group" "alb_sg" {
   name        = "alb-security-group"
   description = "Security group for ALB"
-  vpc_id      = aws_vpc.main.id
+  vpc_id      = aws_vpc.main_vpc.id
 
   ingress {
     description = "HTTP from anywhere"
