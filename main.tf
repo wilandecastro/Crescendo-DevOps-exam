@@ -8,7 +8,7 @@ resource "aws_vpc" "main_vpc" {
   enable_dns_support = true
   enable_dns_hostnames = true
   tags = {
-    Name = "Crescendo-VPC"
+    Name = "main-VPC"
   }
 }
 
@@ -62,7 +62,7 @@ resource "aws_internet_gateway" "igw" {
 
 # Create NAT Gateway for Private Subnets
 resource "aws_eip" "nat_eip" {
-  domain = true
+  domain = "vpc"
 }
 
 resource "aws_nat_gateway" "nat_gateway" {
@@ -120,6 +120,7 @@ resource "aws_lb" "app_lb" {
   security_groups    = [aws_security_group.alb_sg.id]
   subnets            = [aws_subnet.public_subnet_1.id, aws_subnet.public_subnet_2.id]
   }
+
 # EC2 Instance with Nginx and Tomcat Installed
 resource "aws_instance" "app_server" {
   ami           = "ami-0c55b159cbfafe1f0"  # Amazon Linux 2 AMI
