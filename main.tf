@@ -62,7 +62,7 @@ resource "aws_internet_gateway" "igw" {
 
 # Create NAT Gateway for Private Subnets
 resource "aws_eip" "nat_eip" {
-  vpc = true
+  domain = true
 }
 
 resource "aws_nat_gateway" "nat_gateway" {
@@ -82,9 +82,34 @@ resource "aws_route_table" "public_route_table" {
   }
 }
 
+#security group for your Application Load Balancer
 resource "aws_route_table_association" "public_assoc_1" {
   subnet_id      = aws_subnet.public_1.id
   route_table_id = aws_route_table.public_route_table.id
+}
+resource "aws_security_group" "alb_sg" {
+  name        = "alb-security-group"
+  description = "Security group for ALB"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    description = "HTTP from anywhere"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "alb-security-group"
+  }
 }
 
 # Application Load Balancer (ALB)
