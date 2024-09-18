@@ -3,30 +3,31 @@ name: Terraform Apply
 on:
   push:
     branches:
-      - main  # Triggers this workflow when changes are pushed to the 'main' branch.
+      - main
 
 jobs:
   terraform:
     name: Terraform Apply
     runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: us-east-1
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2  # Checkout the code from your repo.
+        uses: actions/checkout@v2
         
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 2.297.0  # Specify your Terraform version here.
+          terraform_version: 1.5.0
           
       - name: Terraform Init
-        run: terraform init  # Initialize Terraform.
+        run: terraform init
         
       - name: Terraform Plan
-        run: terraform plan  # Check Terraform plan.
+        run: terraform plan
         
       - name: Terraform Apply
-        run: terraform apply -auto-approve  # Apply the Terraform plan automatically.
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}  # Access the AWS credentials from secrets.
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: terraform apply -auto-approve
