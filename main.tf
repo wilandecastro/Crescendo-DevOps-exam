@@ -68,7 +68,7 @@ resource "aws_eip" "nat_eip" {
 
 resource "aws_nat_gateway" "nat_gateway" {
   allocation_id = aws_eip.nat_eip.id
-  subnet_id     = aws_subnet.public_1.id
+  subnet_id     = aws_subnet.public_subnet_1.id
   tags = {
     Name = "Crescendo-NAT"
   }
@@ -108,7 +108,7 @@ resource "aws_route_table_association" "public_2" {
 
 #security group for your Application Load Balancer
 resource "aws_route_table_association" "public_assoc_1" {
-  subnet_id      = aws_subnet.public_1.id
+  subnet_id      = aws_subnet.public_subnet_1.id
   route_table_id = aws_route_table.public_route_table.id
 }
 resource "aws_security_group" "alb_sg" {
@@ -150,7 +150,7 @@ resource "aws_lb" "app_lb" {
 resource "aws_instance" "app_server" {
   ami           = "ami-0c55b159cbfafe1f0"  # Amazon Linux 2 AMI
   instance_type = "t2.micro"
-  subnet_id     = aws_subnet.public_1.id
+  subnet_id     = aws_subnet.public_subnet_1.id
 
   user_data = <<-EOF
               #!/bin/bash
