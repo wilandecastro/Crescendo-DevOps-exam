@@ -120,11 +120,6 @@ resource "aws_lb" "app_lb" {
   security_groups    = [aws_security_group.alb_sg.id]
   subnets            = [aws_subnet.public_subnet_1.id, aws_subnet.public_subnet_2.id]
 
-  # ... rest of your configuration ...
-}
-  enable_deletion_protection = false
-}
-
 # EC2 Instance with Nginx and Tomcat Installed
 resource "aws_instance" "app_server" {
   ami           = "ami-0c55b159cbfafe1f0"  # Amazon Linux 2 AMI
