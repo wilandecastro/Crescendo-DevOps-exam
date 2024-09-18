@@ -109,7 +109,7 @@ resource "aws_route_table_association" "public_2" {
 #security group for your Application Load Balancer
 resource "aws_route_table_association" "public_assoc_1" {
   subnet_id      = aws_subnet.public_subnet_1.id
-  route_table_id = aws_route_table.public_route_table.id
+  route_table_id = aws_route_table.public_rt.id
 }
 resource "aws_security_group" "alb_sg" {
   name        = "alb-security-group"
